@@ -1,6 +1,5 @@
 import { Request, Response } from "express"
 import User, { IUser } from "../models/user.js"
-import mongoose from "mongoose"
 
 class UserController {
   static getUsers = async (_: Request, res: Response): Promise<void> => {
@@ -15,12 +14,6 @@ class UserController {
   static getUserById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params
-
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({ message: "Invalid ID format." })
-        return
-      }
-
       const user = await User.findById(id)
 
       if (!user) {
@@ -29,6 +22,7 @@ class UserController {
       }
 
       res.status(200).json(user)
+
     } catch (error) {
       res.status(500).json({ message: "Failed to get user.", error })
     }
@@ -48,12 +42,6 @@ class UserController {
   static updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params
-
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({ message: "Invalid ID format." })
-        return
-      }
-
       const userData: IUser = req.body
       const updatedUser = await User.findByIdAndUpdate(id, userData, { new: true })
 
@@ -71,12 +59,6 @@ class UserController {
   static deleteUser = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params
-
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({ message: "Invalid ID format." })
-        return
-      }
-
       const deletedUser = await User.findByIdAndDelete(id)
 
       if (!deletedUser) {
