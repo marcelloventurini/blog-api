@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import User, { IUser } from "../models/user.js"
+import mongoose from "mongoose"
 
 class UserController {
   static getUsers = async (_: Request, res: Response): Promise<void> => {
@@ -14,7 +15,18 @@ class UserController {
   static getUserById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        res.status(400).json({ message: "Invalid ID format." })
+        return
+      }
+
       const user = await User.findById(id)
+
+      if (!user) {
+        res.status(404).json({ message: "User not found." })
+        return
+      }
 
       res.status(200).json(user)
     } catch (error) {
@@ -36,8 +48,19 @@ class UserController {
   static updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        res.status(400).json({ message: "Invalid ID format." })
+        return
+      }
+
       const userData: IUser = req.body
       const updatedUser = await User.findByIdAndUpdate(id, userData, { new: true })
+
+      if (!updatedUser) {
+        res.status(404).json({ message: "User not found." })
+        return
+      }
 
       res.status(200).json({ message: "User updated successfully.", updatedUser })
     } catch (error) {
@@ -48,7 +71,18 @@ class UserController {
   static deleteUser = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params
-      await User.findByIdAndDelete(id)
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        res.status(400).json({ message: "Invalid ID format." })
+        return
+      }
+
+      const deletedUser = await User.findByIdAndDelete(id)
+
+      if (!deletedUser) {
+        res.status(404).json({ message: "User not found." })
+        return
+      }
 
       res.status(200).json({ message: "User deleted successfully." })
     } catch (error) {

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_js_1 = __importDefault(require("../models/user.js"));
+const mongoose_1 = __importDefault(require("mongoose"));
 class UserController {
 }
 _a = UserController;
@@ -29,7 +30,15 @@ UserController.getUsers = (_, res) => __awaiter(void 0, void 0, void 0, function
 UserController.getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+            res.status(400).json({ message: "Invalid ID format." });
+            return;
+        }
         const user = yield user_js_1.default.findById(id);
+        if (!user) {
+            res.status(404).json({ message: "User not found." });
+            return;
+        }
         res.status(200).json(user);
     }
     catch (error) {
@@ -49,8 +58,16 @@ UserController.createUser = (req, res) => __awaiter(void 0, void 0, void 0, func
 UserController.updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+            res.status(400).json({ message: "Invalid ID format." });
+            return;
+        }
         const userData = req.body;
         const updatedUser = yield user_js_1.default.findByIdAndUpdate(id, userData, { new: true });
+        if (!updatedUser) {
+            res.status(404).json({ message: "User not found." });
+            return;
+        }
         res.status(200).json({ message: "User updated successfully.", updatedUser });
     }
     catch (error) {
@@ -60,7 +77,15 @@ UserController.updateUser = (req, res) => __awaiter(void 0, void 0, void 0, func
 UserController.deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        yield user_js_1.default.findByIdAndDelete(id);
+        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+            res.status(400).json({ message: "Invalid ID format." });
+            return;
+        }
+        const deletedUser = yield user_js_1.default.findByIdAndDelete(id);
+        if (!deletedUser) {
+            res.status(404).json({ message: "User not found." });
+            return;
+        }
         res.status(200).json({ message: "User deleted successfully." });
     }
     catch (error) {
