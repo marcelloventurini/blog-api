@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express"
 import mongoose from "mongoose"
 
 const validateIdFormat = (req: Request, res: Response, next: NextFunction) => {
@@ -12,4 +12,9 @@ const validateIdFormat = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-export { validateIdFormat }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const errorHandler: ErrorRequestHandler = (err, _, res, _next) => {
+  res.status(500).json({ message: "Internal server error.", err })
+}
+
+export { validateIdFormat, errorHandler }

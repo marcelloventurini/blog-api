@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateIdFormat = void 0;
+exports.errorHandler = exports.validateIdFormat = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const validateIdFormat = (req, res, next) => {
     const { id } = req.params;
@@ -14,3 +14,8 @@ const validateIdFormat = (req, res, next) => {
     next();
 };
 exports.validateIdFormat = validateIdFormat;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const errorHandler = (err, _, res, _next) => {
+    res.status(500).json({ message: "Internal server error.", err });
+};
+exports.errorHandler = errorHandler;
