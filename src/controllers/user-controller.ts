@@ -42,7 +42,7 @@ class UserController {
     try {
       const { id } = req.params
       const userData: IUser = req.body
-      const updatedUser = await User.findByIdAndUpdate(id, userData, { new: true })
+      const updatedUser = await User.findOneAndUpdate({ _id: id }, userData, { new: true, runValidators: true })
 
       if (!updatedUser) {
         res.status(404).json({ message: "User not found." })

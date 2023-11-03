@@ -54,7 +54,7 @@ UserController.updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0
     try {
         const { id } = req.params;
         const userData = req.body;
-        const updatedUser = yield user_js_1.default.findByIdAndUpdate(id, userData, { new: true });
+        const updatedUser = yield user_js_1.default.findOneAndUpdate({ _id: id }, userData, { new: true, runValidators: true });
         if (!updatedUser) {
             res.status(404).json({ message: "User not found." });
             return;
