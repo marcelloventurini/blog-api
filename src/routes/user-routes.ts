@@ -5,6 +5,7 @@ import { validateIdFormat } from "../middlewares/validations"
 const router = express.Router()
 
 router.get("/users", UserController.getUsers)
+router.get("/users/search", UserController.search)
 router.get("/users/:id", validateIdFormat, UserController.getUserById)
 router.post("/users", UserController.createUser)
 router.put("/users/:id", validateIdFormat, UserController.updateUser)

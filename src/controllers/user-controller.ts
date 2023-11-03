@@ -70,6 +70,34 @@ class UserController {
       next(error)
     }
   }
+
+  static search = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { search } = req.query
+
+      if (!search) {
+        res.status(400).json({ message: "The search parameter is missing or empty." })
+        return
+      }
+
+      const users = await User.find({
+        $or: [
+          { username: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+          { fullName: { $regex: search, $options: "i" } }
+        ]
+      })
+
+      if (users.length === 0) {
+        res.status(404).json({ message: "No user found." })
+        return
+      }
+
+      res.status(200).json(users)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default UserController

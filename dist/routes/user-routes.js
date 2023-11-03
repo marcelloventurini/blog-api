@@ -8,6 +8,7 @@ const user_controller_1 = __importDefault(require("../controllers/user-controlle
 const validations_1 = require("../middlewares/validations");
 const router = express_1.default.Router();
 router.get("/users", user_controller_1.default.getUsers);
+router.get("/users/search", user_controller_1.default.search);
 router.get("/users/:id", validations_1.validateIdFormat, user_controller_1.default.getUserById);
 router.post("/users", user_controller_1.default.createUser);
 router.put("/users/:id", validations_1.validateIdFormat, user_controller_1.default.updateUser);

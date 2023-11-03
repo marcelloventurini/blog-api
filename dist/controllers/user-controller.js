@@ -79,4 +79,28 @@ UserController.deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0
         next(error);
     }
 });
+UserController.search = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { search } = req.query;
+        if (!search) {
+            res.status(400).json({ message: "The search parameter is missing or empty." });
+            return;
+        }
+        const users = yield user_js_1.default.find({
+            $or: [
+                { username: { $regex: search, $options: "i" } },
+                { email: { $regex: search, $options: "i" } },
+                { fullName: { $regex: search, $options: "i" } }
+            ]
+        });
+        if (users.length === 0) {
+            res.status(404).json({ message: "No user found." });
+            return;
+        }
+        res.status(200).json(users);
+    }
+    catch (error) {
+        next(error);
+    }
+});
 exports.default = UserController;
