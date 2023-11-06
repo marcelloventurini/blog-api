@@ -2,9 +2,18 @@ import { NextFunction, Request, Response } from "express"
 import User, { IUser } from "../models/user.js"
 
 class UserController {
-  static getUsers = async (_: Request, res: Response, next: NextFunction): Promise<void> => {
+  static getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      const { page = 1, limit = 3 } = req.query
+
+      if (limit === "" || page === "") {
+        res.status(400).json({ message: "Invalid format for limit and/or page." })
+      }
+ 
       const users = await User.find()
+        .skip((Number(page) - 1) * Number(limit))
+        .limit(Number(limit))
+
       res.status(200).json(users)
     } catch (error) {
       next(error)

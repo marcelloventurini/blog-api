@@ -17,9 +17,15 @@ const user_js_1 = __importDefault(require("../models/user.js"));
 class UserController {
 }
 _a = UserController;
-UserController.getUsers = (_, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+UserController.getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield user_js_1.default.find();
+        const { page = 1, limit = 3 } = req.query;
+        if (limit === "" || page === "") {
+            res.status(400).json({ message: "Invalid format for limit and/or page." });
+        }
+        const users = yield user_js_1.default.find()
+            .skip((Number(page) - 1) * Number(limit))
+            .limit(Number(limit));
         res.status(200).json(users);
     }
     catch (error) {
