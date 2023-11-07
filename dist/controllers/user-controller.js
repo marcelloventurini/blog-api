@@ -14,16 +14,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_js_1 = __importDefault(require("../models/user.js"));
+var Order;
+(function (Order) {
+    Order["ASC"] = "asc";
+    Order["DESC"] = "desc";
+})(Order || (Order = {}));
 class UserController {
 }
 _a = UserController;
 UserController.getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { page = 1, limit = 3 } = req.query;
-        if (limit === "" || page === "") {
-            res.status(400).json({ message: "Invalid format for limit and/or page." });
+        const { page = 1, limit = 3, sortBy = "_id", order = Order.DESC } = req.query;
+        if (page <= 0 || limit <= 0) {
+            res.status(400).json({ message: "Invalid format for limit or page." });
+            return;
         }
+        if (!["_id", "username", "email", "fullName"].includes(sortBy)) {
+            res.status(400).json({ message: "Invalid 'sortBy' parameter." });
+            return;
+        }
+        if (order !== Order.ASC && order !== Order.DESC) {
+            res.status(400).json({ message: "erro" });
+            return;
+        }
+        const sortOptions = {
+            [sortBy]: order === Order.DESC ? -1 : 1
+        };
         const users = yield user_js_1.default.find()
+            .sort(sortOptions)
             .skip((Number(page) - 1) * Number(limit))
             .limit(Number(limit));
         res.status(200).json(users);
