@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Order = exports.paginateAndQuery = void 0;
+exports.paginateAndQuery = void 0;
 var Order;
 (function (Order) {
     Order["ASC"] = "asc";
     Order["DESC"] = "desc";
-})(Order || (exports.Order = Order = {}));
+})(Order || (Order = {}));
 const paginateAndQuery = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { page = 1, limit = 3, sortBy = "_id", order = Order.DESC } = req.query;

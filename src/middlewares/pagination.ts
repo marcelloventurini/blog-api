@@ -52,4 +52,4 @@ const paginateAndQuery = async (req: Request, res: Response, next: NextFunction)
   }
 }
 
-export { paginateAndQuery, Order }
+export { paginateAndQuery }
