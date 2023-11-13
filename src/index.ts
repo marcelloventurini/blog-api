@@ -2,6 +2,7 @@ import express from "express"
 import connectDB from "./config/db-connect"
 import dotenv from "dotenv"
 import users from "./routes/user-routes.js"
+import posts from "./routes/post-routes.js"
 import { errorHandler } from "./middlewares/validations.js"
 
 dotenv.config()
@@ -22,6 +23,7 @@ app.get("/", (_, res) => {
 
 app.use(express.json())
 app.use(express.json(), users)
+app.use(express.json(), posts)
 app.use(errorHandler)
 
 app.listen(port, () => {

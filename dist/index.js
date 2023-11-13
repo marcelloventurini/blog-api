@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const db_connect_1 = __importDefault(require("./config/db-connect"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const user_routes_js_1 = __importDefault(require("./routes/user-routes.js"));
+const post_routes_js_1 = __importDefault(require("./routes/post-routes.js"));
 const validations_js_1 = require("./middlewares/validations.js");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -21,6 +22,7 @@ app.get("/", (_, res) => {
 });
 app.use(express_1.default.json());
 app.use(express_1.default.json(), user_routes_js_1.default);
+app.use(express_1.default.json(), post_routes_js_1.default);
 app.use(validations_js_1.errorHandler);
 app.listen(port, () => {
     console.log(`Server listen on port ${port}`);
