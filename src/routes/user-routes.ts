@@ -5,8 +5,8 @@ import { paginateAndQuery } from "../middlewares/pagination"
 
 const router = express.Router()
 
-router.get("/users", paginateAndQuery, UserController.getUsers)
-router.get("/users/search", paginateAndQuery, UserController.search)
+router.get("/users", UserController.getUsers, paginateAndQuery)
+router.get("/users/search", UserController.search, paginateAndQuery)
 router.get("/users/:id", validateIdFormat, UserController.getUserById)
 router.post("/users", UserController.createUser)
 router.put("/users/:id", validateIdFormat, UserController.updateUser)

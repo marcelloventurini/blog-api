@@ -17,10 +17,11 @@ const user_js_1 = __importDefault(require("../models/user.js"));
 class UserController {
 }
 _a = UserController;
-UserController.getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+UserController.getUsers = (req, _, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { users } = req.result;
-        res.status(200).json(users);
+        const users = user_js_1.default.find();
+        req.result = users;
+        next();
     }
     catch (error) {
         next(error);
@@ -86,12 +87,15 @@ UserController.search = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             res.status(400).json({ message: "The search parameter is missing or empty." });
             return;
         }
-        const { users } = req.result;
-        if (users.length === 0) {
-            res.status(404).json({ message: "No user found." });
-            return;
-        }
-        res.status(200).json(users);
+        const users = user_js_1.default.find({
+            $or: [
+                { username: { $regex: search, $options: "i" } },
+                { email: { $regex: search, $options: "i" } },
+                { fullName: { $regex: search, $options: "i" } },
+            ]
+        });
+        req.result = users;
+        next();
     }
     catch (error) {
         next(error);

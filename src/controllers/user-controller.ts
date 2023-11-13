@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from "express"
 import User, { IUser } from "../models/user.js"
 
 class UserController {
-  static getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  static getUsers = async (req: Request, _: Response, next: NextFunction): Promise<void> => {
     try {
-      const { users } = req.result
-
-      res.status(200).json(users)
+      const users = User.find()
+      req.result = users
+      next()
     } catch (error) {
       next(error)
     }
@@ -81,14 +81,16 @@ class UserController {
         return
       }
 
-      const { users } = req.result
+      const users = User.find({
+        $or: [
+          { username: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+          { fullName: { $regex: search, $options: "i" } },
+        ]
+      })
 
-      if (users.length === 0) {
-        res.status(404).json({ message: "No user found." })
-        return
-      }
-
-      res.status(200).json(users)
+      req.result = users
+      next()
     } catch (error) {
       next(error)
     }

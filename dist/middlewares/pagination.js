@@ -8,12 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = exports.paginateAndQuery = void 0;
-const user_1 = __importDefault(require("../models/user"));
 var Order;
 (function (Order) {
     Order["ASC"] = "asc";
@@ -37,18 +33,16 @@ const paginateAndQuery = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         const sortOptions = {
             [sortBy]: order === Order.DESC ? -1 : 1
         };
-        const users = yield user_1.default.find()
+        const result = req.result;
+        const users = yield result.find()
             .sort(sortOptions)
             .skip((Number(page) - 1) * Number(limit))
             .limit(Number(limit));
-        req.result = {
-            users,
-            page,
-            limit,
-            sortBy,
-            order
-        };
-        next();
+        if (users.length === 0) {
+            res.status(404).json({ message: "No user found." });
+            return;
+        }
+        res.status(200).json(users);
     }
     catch (error) {
         next(error);

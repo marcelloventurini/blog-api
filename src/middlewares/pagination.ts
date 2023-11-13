@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express"
-import User from "../models/user"
 
 enum Order {
   ASC = "asc",
@@ -36,20 +35,18 @@ const paginateAndQuery = async (req: Request, res: Response, next: NextFunction)
       [sortBy]: order === Order.DESC ? -1 : 1
     }
 
-    const users = await User.find()
+    const result = req.result
+    const users = await result.find()
       .sort(sortOptions)
       .skip((Number(page) - 1) * Number(limit))
       .limit(Number(limit))
 
-    req.result = {
-      users,
-      page,
-      limit,
-      sortBy,
-      order
+    if (users.length === 0) {
+      res.status(404).json({ message: "No user found." })
+      return
     }
 
-    next()
+    res.status(200).json(users)
   } catch (error) {
     next(error)
   }

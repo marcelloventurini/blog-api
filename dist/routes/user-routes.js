@@ -8,8 +8,8 @@ const user_controller_1 = __importDefault(require("../controllers/user-controlle
 const validations_1 = require("../middlewares/validations");
 const pagination_1 = require("../middlewares/pagination");
 const router = express_1.default.Router();
-router.get("/users", pagination_1.paginateAndQuery, user_controller_1.default.getUsers);
-router.get("/users/search", pagination_1.paginateAndQuery, user_controller_1.default.search);
+router.get("/users", user_controller_1.default.getUsers, pagination_1.paginateAndQuery);
+router.get("/users/search", user_controller_1.default.search, pagination_1.paginateAndQuery);
 router.get("/users/:id", validations_1.validateIdFormat, user_controller_1.default.getUserById);
 router.post("/users", user_controller_1.default.createUser);
 router.put("/users/:id", validations_1.validateIdFormat, user_controller_1.default.updateUser);
