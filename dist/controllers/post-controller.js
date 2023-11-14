@@ -26,4 +26,45 @@ PostController.getPosts = (_, res, next) => __awaiter(void 0, void 0, void 0, fu
         next(error);
     }
 });
+PostController.getPostById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const postById = yield post_1.default.findById(id);
+        res.status(200).json(postById);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+PostController.createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const postData = req.body;
+        const newPost = yield post_1.default.create(postData);
+        res.status(201).json({ message: "Post created successfully.", newPost });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+PostController.updatePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const postData = req.body;
+        const updatedPost = yield post_1.default.findByIdAndUpdate(id, postData, { new: true });
+        res.status(200).json({ message: "Post updated successfully.", updatedPost });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+PostController.deletePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        yield post_1.default.findByIdAndDelete(id);
+        res.status(200).json({ message: "Post deleted successfully." });
+    }
+    catch (error) {
+        next(error);
+    }
+});
 exports.default = PostController;
