@@ -30,6 +30,10 @@ PostController.getPostById = (req, res, next) => __awaiter(void 0, void 0, void 
     try {
         const { id } = req.params;
         const postById = yield post_1.default.findById(id);
+        if (!postById) {
+            res.status(404).json({ message: "Post not found." });
+            return;
+        }
         res.status(200).json(postById);
     }
     catch (error) {
@@ -51,6 +55,10 @@ PostController.updatePost = (req, res, next) => __awaiter(void 0, void 0, void 0
         const { id } = req.params;
         const postData = req.body;
         const updatedPost = yield post_1.default.findOneAndUpdate({ _id: id }, postData, { new: true, runValidators: true });
+        if (!updatedPost) {
+            res.status(404).json({ message: "Post not found." });
+            return;
+        }
         res.status(200).json({ message: "Post updated successfully.", updatedPost });
     }
     catch (error) {
@@ -60,7 +68,11 @@ PostController.updatePost = (req, res, next) => __awaiter(void 0, void 0, void 0
 PostController.deletePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        yield post_1.default.findByIdAndDelete(id);
+        const deletedPost = yield post_1.default.findByIdAndDelete(id);
+        if (!deletedPost) {
+            res.status(404).json({ message: "Post not found." });
+            return;
+        }
         res.status(200).json({ message: "Post deleted successfully." });
     }
     catch (error) {

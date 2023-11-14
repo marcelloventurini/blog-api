@@ -42,7 +42,7 @@ const paginateAndQuery = async (req: Request, res: Response, next: NextFunction)
       .limit(Number(limit))
 
     if (queryResult.length === 0) {
-      res.status(404).json({ message: "No user found." })
+      res.status(404).json({ message: "Nothing was found." })
       return
     }
 

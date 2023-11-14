@@ -16,6 +16,11 @@ class PostController {
       const { id } = req.params
       const postById = await Post.findById(id)
 
+      if (!postById) {
+        res.status(404).json({ message: "Post not found." })
+        return
+      }
+
       res.status(200).json(postById)
     } catch (error) {
       next(error)
@@ -39,6 +44,11 @@ class PostController {
       const postData: IPost = req.body
       const updatedPost = await Post.findOneAndUpdate({ _id: id }, postData, { new: true, runValidators: true })
 
+      if (!updatedPost) {
+        res.status(404).json({ message: "Post not found." })
+        return
+      }
+
       res.status(200).json({ message: "Post updated successfully.", updatedPost })
     } catch (error) {
       next(error)
@@ -48,7 +58,12 @@ class PostController {
   static deletePost = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id } = req.params
-      await Post.findByIdAndDelete(id)
+      const deletedPost = await Post.findByIdAndDelete(id)
+
+      if (!deletedPost) {
+        res.status(404).json({ message: "Post not found." })
+        return
+      }
 
       res.status(200).json({ message: "Post deleted successfully." })
     } catch (error) {

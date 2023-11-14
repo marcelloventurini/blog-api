@@ -39,7 +39,7 @@ const paginateAndQuery = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             .skip((Number(page) - 1) * Number(limit))
             .limit(Number(limit));
         if (queryResult.length === 0) {
-            res.status(404).json({ message: "No user found." });
+            res.status(404).json({ message: "Nothing was found." });
             return;
         }
         res.status(200).json(queryResult);
