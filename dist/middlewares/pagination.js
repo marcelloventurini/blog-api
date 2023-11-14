@@ -19,7 +19,7 @@ const paginateAndQuery = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     try {
         const { page = 1, limit = 3, sortBy = "_id", order = Order.DESC } = req.query;
         if (page <= 0 || limit <= 0) {
-            res.status(400).json({ message: "Invalid format for limit or page." });
+            res.status(400).json({ message: "Invalid format for 'limit' or 'page'." });
             return;
         }
         if (!["_id", "username", "email", "fullName"].includes(sortBy)) {
@@ -34,15 +34,15 @@ const paginateAndQuery = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             [sortBy]: order === Order.DESC ? -1 : 1
         };
         const result = req.result;
-        const users = yield result.find()
+        const queryResult = yield result.find()
             .sort(sortOptions)
             .skip((Number(page) - 1) * Number(limit))
             .limit(Number(limit));
-        if (users.length === 0) {
+        if (queryResult.length === 0) {
             res.status(404).json({ message: "No user found." });
             return;
         }
-        res.status(200).json(users);
+        res.status(200).json(queryResult);
     }
     catch (error) {
         next(error);

@@ -25,8 +25,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const postSchema = new mongoose_1.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
+    title: { type: String, required: true, trim: true },
+    content: { type: String, required: true, trim: true },
     publicationDate: { type: Date, default: Date.now },
     author: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true }
 });

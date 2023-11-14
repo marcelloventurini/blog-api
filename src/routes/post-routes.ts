@@ -4,6 +4,7 @@ import PostController from "../controllers/post-controller"
 const router = express.Router()
 
 router.get("/posts", PostController.getPosts)
+router.get("/posts/search", PostController.search)
 router.get("/posts/:id", PostController.getPostById)
 router.post("/posts", PostController.createPost)
 router.put("/posts/:id", PostController.updatePost)

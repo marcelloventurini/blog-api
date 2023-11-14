@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const post_controller_1 = __importDefault(require("../controllers/post-controller"));
 const router = express_1.default.Router();
 router.get("/posts", post_controller_1.default.getPosts);
+router.get("/posts/search", post_controller_1.default.search);
 router.get("/posts/:id", post_controller_1.default.getPostById);
 router.post("/posts", post_controller_1.default.createPost);
 router.put("/posts/:id", post_controller_1.default.updatePost);

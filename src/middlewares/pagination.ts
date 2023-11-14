@@ -17,7 +17,7 @@ const paginateAndQuery = async (req: Request, res: Response, next: NextFunction)
     const { page = 1, limit = 3, sortBy = "_id", order = Order.DESC }: PaginationParams = req.query
 
     if (page <= 0 || limit <= 0) {
-      res.status(400).json({ message: "Invalid format for limit or page." })
+      res.status(400).json({ message: "Invalid format for 'limit' or 'page'." })
       return
     }
 
@@ -36,17 +36,17 @@ const paginateAndQuery = async (req: Request, res: Response, next: NextFunction)
     }
 
     const result = req.result
-    const users = await result.find()
+    const queryResult = await result.find()
       .sort(sortOptions)
       .skip((Number(page) - 1) * Number(limit))
       .limit(Number(limit))
 
-    if (users.length === 0) {
+    if (queryResult.length === 0) {
       res.status(404).json({ message: "No user found." })
       return
     }
 
-    res.status(200).json(users)
+    res.status(200).json(queryResult)
   } catch (error) {
     next(error)
   }
