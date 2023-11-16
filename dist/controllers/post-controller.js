@@ -89,7 +89,8 @@ PostController.search = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         req.result = post_1.default.find({
             $or: [
                 { title: { $regex: search, $options: "i" } },
-                { content: { $regex: search, $options: "i" } }
+                { content: { $regex: search, $options: "i" } },
+                { author: { $regex: search, $options: "i" } }
             ]
         });
         next();

@@ -86,14 +86,13 @@ UserController.search = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             res.status(400).json({ message: "The search parameter is missing or empty." });
             return;
         }
-        const users = user_js_1.default.find({
+        req.result = user_js_1.default.find({
             $or: [
                 { username: { $regex: search, $options: "i" } },
                 { email: { $regex: search, $options: "i" } },
                 { fullName: { $regex: search, $options: "i" } },
             ]
         });
-        req.result = users;
         next();
     }
     catch (error) {

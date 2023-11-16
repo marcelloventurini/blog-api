@@ -83,7 +83,8 @@ class PostController {
       req.result = Post.find({
         $or: [
           { title: { $regex: search, $options: "i" } },
-          { content: { $regex: search, $options: "i" } }
+          { content: { $regex: search, $options: "i" } },
+          { author: { $regex: search, $options: "i" } }
         ]
       })
 

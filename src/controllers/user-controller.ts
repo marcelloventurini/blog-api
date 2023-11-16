@@ -80,15 +80,14 @@ class UserController {
         return
       }
 
-      const users = User.find({
+      req.result = User.find({
         $or: [
           { username: { $regex: search, $options: "i" } },
           { email: { $regex: search, $options: "i" } },
           { fullName: { $regex: search, $options: "i" } },
         ]
       })
-
-      req.result = users
+      
       next()
     } catch (error) {
       next(error)

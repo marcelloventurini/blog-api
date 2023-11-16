@@ -14,7 +14,7 @@ const validateIdFormat = (req: Request, res: Response, next: NextFunction) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler: ErrorRequestHandler = (err, _, res, _next) => {
-  res.status(500).json({ message: "Internal server error.", err })
+  res.status(500).json({ message: "Internal server error.", error: err.message })
 }
 
 export { validateIdFormat, errorHandler }
