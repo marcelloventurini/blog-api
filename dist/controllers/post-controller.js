@@ -17,10 +17,10 @@ const post_1 = __importDefault(require("../models/post"));
 class PostController {
 }
 _a = PostController;
-PostController.getPosts = (_, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+PostController.getPosts = (req, _, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const posts = yield post_1.default.find();
-        res.status(200).json(posts);
+        req.result = post_1.default.find();
+        next();
     }
     catch (error) {
         next(error);
@@ -86,17 +86,13 @@ PostController.search = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             res.status(404).json({ message: "The search parameter is missing or empty." });
             return;
         }
-        const posts = yield post_1.default.find({
+        req.result = post_1.default.find({
             $or: [
                 { title: { $regex: search, $options: "i" } },
                 { content: { $regex: search, $options: "i" } }
             ]
         });
-        if (posts.length === 0) {
-            res.status(404).json({ message: "Post not found." });
-            return;
-        }
-        res.status(200).json(posts);
+        next();
     }
     catch (error) {
         next(error);

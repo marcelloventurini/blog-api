@@ -15,13 +15,14 @@ interface PaginationParams {
 const paginateAndQuery = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { page = 1, limit = 3, sortBy = "_id", order = Order.DESC }: PaginationParams = req.query
+    const validFields = ["_id", "username", "email", "fullName", "title", "content"]
 
     if (page <= 0 || limit <= 0) {
       res.status(400).json({ message: "Invalid format for 'limit' or 'page'." })
       return
     }
 
-    if (!["_id", "username", "email", "fullName"].includes(sortBy)) {
+    if (!validFields.includes(sortBy)) {
       res.status(400).json({ message: "Invalid 'sortBy' parameter." })
       return
     }

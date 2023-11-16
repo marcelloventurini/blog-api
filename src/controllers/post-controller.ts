@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express"
 import Post, { IPost } from "../models/post"
 
 class PostController {
-  static getPosts = async (_: Request, res: Response, next: NextFunction): Promise<void> => {
+  static getPosts = async (req: Request, _: Response, next: NextFunction): Promise<void> => {
     try {
-      const posts = await Post.find()
-      res.status(200).json(posts)
+      req.result = Post.find()
+      next()
     } catch (error) {
       next(error)
     }
@@ -80,19 +80,14 @@ class PostController {
         return
       }
 
-      const posts = await Post.find({
+      req.result = Post.find({
         $or: [
           { title: { $regex: search, $options: "i" } },
           { content: { $regex: search, $options: "i" } }
         ]
       })
 
-      if (posts.length === 0) {
-        res.status(404).json({ message: "Post not found." })
-        return
-      }
-
-      res.status(200).json(posts)
+      next()
     } catch (error) {
       next(error)
     }

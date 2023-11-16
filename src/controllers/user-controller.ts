@@ -4,8 +4,7 @@ import User, { IUser } from "../models/user.js"
 class UserController {
   static getUsers = async (req: Request, _: Response, next: NextFunction): Promise<void> => {
     try {
-      const users = User.find()
-      req.result = users
+      req.result = User.find()
       next()
     } catch (error) {
       next(error)

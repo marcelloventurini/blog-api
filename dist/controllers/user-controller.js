@@ -19,8 +19,7 @@ class UserController {
 _a = UserController;
 UserController.getUsers = (req, _, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = user_js_1.default.find();
-        req.result = users;
+        req.result = user_js_1.default.find();
         next();
     }
     catch (error) {

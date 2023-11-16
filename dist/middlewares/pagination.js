@@ -18,11 +18,12 @@ var Order;
 const paginateAndQuery = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { page = 1, limit = 3, sortBy = "_id", order = Order.DESC } = req.query;
+        const validFields = ["_id", "username", "email", "fullName", "title", "content"];
         if (page <= 0 || limit <= 0) {
             res.status(400).json({ message: "Invalid format for 'limit' or 'page'." });
             return;
         }
-        if (!["_id", "username", "email", "fullName"].includes(sortBy)) {
+        if (!validFields.includes(sortBy)) {
             res.status(400).json({ message: "Invalid 'sortBy' parameter." });
             return;
         }
